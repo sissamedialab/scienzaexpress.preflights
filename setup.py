@@ -15,7 +15,7 @@ long_description = f"""
 setup(
     name="scienzaexpress.preflights",
     version="1.0.0a0",
-    description="A collection of "preflight" actions for RISE",
+    description="A collection of preflight-check actions for RISE",
     long_description=long_description,
     long_description_content_type="text/markdown",
     classifiers=[
@@ -52,8 +52,6 @@ setup(
         "setuptools",
         "Products.CMFPlone",
         "plone.api",
-        "plone.restapi",
-        "plone.volto",
     ],
     extras_require={
         "test": [

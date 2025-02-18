@@ -12,7 +12,6 @@
     class=".check_images.CheckImages"
     template="check_images.pt"
     permission="zope2.View"
-    layer="scienzaexpress.preflights.interfaces.IScienzaexpressPreflightsLayer"
     />
 
 </configure>
