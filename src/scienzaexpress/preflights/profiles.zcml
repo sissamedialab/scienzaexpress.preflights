@@ -1,0 +1,32 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="scienzaexpress.preflights"
+    >
+
+  <genericsetup:registerProfile
+      name="default"
+      title="Preflights: Install"
+      description="Package to configure a new Preflights site"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      directory="profiles/default"
+      />
+
+  <genericsetup:registerProfile
+      name="uninstall"
+      title="Preflights: Uninstall"
+      description="Uninstall Preflights setup."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      directory="profiles/uninstall"
+      />
+
+  <!-- Hide Uninstall Profile-->
+  <utility
+      factory=".setuphandlers.HiddenProfiles"
+      name="scienzaexpress.preflights"
+      />
+
+
+  <include package=".upgrades" />
+
+</configure>
