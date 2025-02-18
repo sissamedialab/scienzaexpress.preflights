@@ -6,5 +6,9 @@
   <object meta_type="Dexterity FTI"
           name="MyType"
   />
--->
+  -->
+
+  <object meta_type="Dexterity FTI"
+          name="Folder"
+  />
 </object>

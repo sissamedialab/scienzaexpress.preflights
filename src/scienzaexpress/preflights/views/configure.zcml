@@ -2,16 +2,17 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:plone="http://namespaces.plone.org/plone"
-    i18n_domain="scienzaexpress.preflights">
+    i18n_domain="scienzaexpress.preflights"
+    >
 
- <!-- -*- extra stuff goes here -*- -->
+  <!-- -*- extra stuff goes here -*- -->
 
   <browser:page
-    name="check-images"
-    for="plone.app.contenttypes.interfaces.IFolder"
-    class=".check_images.CheckImages"
-    template="check_images.pt"
-    permission="zope2.View"
-    />
+      name="check-images"
+      for="plone.app.contenttypes.interfaces.IFolder"
+      class=".check_images.CheckImages"
+      template="check_images.pt"
+      permission="zope2.View"
+      />
 
 </configure>
