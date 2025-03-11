@@ -8,6 +8,14 @@
   <!-- -*- extra stuff goes here -*- -->
 
   <browser:page
+      name="pdf-preflight"
+      for="plone.app.contenttypes.interfaces.IFolder"
+      class=".pdf_preflight.PdfPreflight"
+      template="pdf_preflight.pt"
+      permission="zope2.View"
+      />
+
+  <browser:page
       name="check-images"
       for="plone.app.contenttypes.interfaces.IFolder"
       class=".check_images.CheckImages"
