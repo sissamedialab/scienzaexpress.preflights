@@ -4,7 +4,7 @@
         name="Folder"
         i18n:domain="scienzaexpress.risetypes"
 >
-
+  <!-- TODO: correctly setup "actions" see https://5.docs.plone.org/develop/plone/functionality/actions.html -->
   <action action_id="check-images"
           category="object"
           condition_expr="not:object/@@plone_lock_info/is_locked_for_current_user|python:True"
@@ -16,4 +16,19 @@
           i18n:domain="plone"
   >
     <permission value="Modify portal content" />
-  </action></object>
+  </action>
+
+  <action action_id="pdf-preflight"
+          category="object"
+          condition_expr="not:object/@@plone_lock_info/is_locked_for_current_user|python:True"
+          icon_expr="string:ui-checks-grid"
+          title="PDF preflight"
+          url_expr="string:${object_url}/pdf-preflight"
+          visible="True"
+          i18n:attributes="title"
+          i18n:domain="plone"
+  >
+    <permission value="Modify portal content" />
+  </action>
+
+</object>
