@@ -168,3 +168,21 @@ ignore = [
 #  _your own configuration lines_
 #  """
 ##
+
+[tool.ruff]
+target-version = "py311"
+line-length = 119
+
+[tool.ruff.lint]
+preview = true
+select = ["ALL"]
+# A003 is triggered only sometimes!
+ignore = [
+  "COM819",
+  "EM101",
+  "D212","D203",
+  "CPY001"
+  ]
+
+fixable = ["ALL"]
+unfixable = []

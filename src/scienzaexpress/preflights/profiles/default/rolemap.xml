@@ -2,5 +2,15 @@
 <rolemap>
   <permissions>
     <!-- -*- extra stuff goes here -*- -->
+
+    <permission acquire="True"
+                name="scienzaexpress.preflights: Add PublicationMetadata"
+    >
+      <role name="Manager" />
+      <role name="Site Administrator" />
+      <role name="Owner" />
+      <role name="Contributor" />
+    </permission>
+
   </permissions>
 </rolemap>

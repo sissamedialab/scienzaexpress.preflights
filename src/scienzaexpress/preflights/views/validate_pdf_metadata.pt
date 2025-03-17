@@ -6,23 +6,29 @@
       i18n:domain="scienzaexpress.preflights"
 >
   <body>
+
     <metal:custom_title fill-slot="content-title">
       <h1 tal:replace="structure context/@@title"></h1>
+
       <!-- @@title view template: -->
       <!--
     <h1 tal:define="title context/Title" tal:condition="title" tal:content="title">
       Title or id
     </h1>
--->
+    -->
+
     </metal:custom_title>
+
     <metal:custom_description fill-slot="content-description">
       <p tal:replace="structure context/@@description"></p>
     </metal:custom_description>
+
     <metal:content-core fill-slot="content-core">
       <metal:block define-macro="content-core">
+
+        <h2>PDF content</h2>
         <!--<div tal:replace="view/my_custom_view_method" />-->
         <!--<div tal:replace="context/my_custom_field" />-->
-        <h2>Image Check Results</h2>
         <tal:results tal:define="
                        results view/results;
                      "
@@ -34,18 +40,13 @@
           >
             <thead>
               <tr>
-                <th>good</th>
-                <th>file name</th>
-                <th>image</th>
+                <th>result</th>
               </tr>
             </thead>
             <tbody>
               <tal:repeat tal:repeat="result results">
                 <tr>
-                  <td tal:condition="result/good">🟢</td>
-                  <td tal:condition="not:result/good">🔴 risoluzione troppo bassa</td>
-                  <td tal:content="result/file_obj/file/filename"></td>
-                  <td tal:content="result/details"></td>
+                  <td tal:content="result"></td>
                 </tr>
               </tal:repeat>
             </tbody>
@@ -54,6 +55,7 @@
         <tal:noresults tal:condition="not:view/results">
           <p>No PDF files found in this folder.</p>
         </tal:noresults>
+
       </metal:block>
     </metal:content-core>
   </body>

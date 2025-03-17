@@ -6,4 +6,10 @@
 
   <!-- -*- extra stuff goes here -*- -->
 
+  <permission
+      id="scienzaexpress.preflights.AddPublicationMetadata"
+      title="scienzaexpress.preflights: Add PublicationMetadata"
+      />
+
+
 </configure>

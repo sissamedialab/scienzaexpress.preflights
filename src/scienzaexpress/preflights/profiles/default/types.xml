@@ -7,8 +7,10 @@
           name="MyType"
   />
   -->
-
   <object meta_type="Dexterity FTI"
           name="Folder"
+  />
+  <object meta_type="Dexterity FTI"
+          name="Publication Metadata"
   />
 </object>

@@ -69,7 +69,7 @@ class PdfPreflight(BrowserView):
 
     def check_pdf_images(self) -> list[CheckResult]:
         """Verify that all images of all PDF files in this folder meet some requirements."""
-        # see rise#16
+        # see rise#24
         results = []
         pdf_files = self._get_all_pdf_objects()
         for file_obj in pdf_files:

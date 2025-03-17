@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model xmlns="http://namespaces.plone.org/supermodel/schema"
+       xmlns:form="http://namespaces.plone.org/supermodel/form"
+       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+       xmlns:indexer="http://namespaces.plone.org/supermodel/indexer"
+       xmlns:lingua="http://namespaces.plone.org/supermodel/lingua"
+       xmlns:marshal="http://namespaces.plone.org/supermodel/marshal"
+       xmlns:security="http://namespaces.plone.org/supermodel/security"
+       xmlns:users="http://namespaces.plone.org/supermodel/users"
+       i18n:domain="scienzaexpress.preflights"
+>
+  <schema>
+    <!-- use dexterity title for "titolo" -->
+    <field name="sottotitolo"
+           type="zope.schema.TextLine"
+    >
+      <description />
+      <required>False</required>
+      <title>Sottotitolo</title>
+    </field>
+    <field name="isbn"
+           type="zope.schema.TextLine"
+    >
+      <description />
+      <title>ISBN</title>
+    </field>
+    <field name="autori"
+           type="zope.schema.TextLine"
+    >
+      <description>Uno o pi&#249; autori, nella seguente forma: Nome Cognome; Nome Cognome; ...</description>
+      <title>Autori</title>
+    </field>
+    <field name="illustratori"
+           type="zope.schema.TextLine"
+    >
+      <description>Uno o pi&#249; illustratori, nella seguente forma: Nome Cognome; Nome Cognome; ...</description>
+      <required>False</required>
+      <title>Illustratori</title>
+    </field>
+    <field name="traduttori"
+           type="zope.schema.TextLine"
+    >
+      <description>Uno o pi&#249; traduttori, nella seguente forma: Nome Cognome; Nome Cognome; ...</description>
+      <required>False</required>
+      <title>Traduttori</title>
+    </field>
+    <field name="curatori"
+           type="zope.schema.TextLine"
+    >
+      <description>Uno o pi&#249; curatori, nella seguente forma: Nome Cognome; Nome Cognome; ...</description>
+      <required>False</required>
+      <title>Curatori</title>
+    </field>
+    <field name="biografie"
+           type="zope.schema.Text"
+    >
+      <description>Uno o pi&#249; autori, nella seguente forma: Biografia;; Biografia;; ... Devono essere quanti sono gli autori (eventualmente vuote)</description>
+      <required>False</required>
+      <title>Biografie</title>
+    </field>
+    <field name="data_pubblicazione"
+           type="zope.schema.TextLine"
+    >
+      <description>La data di pubblicazione nella forma YYYYMM oppure YYYYMMDD</description>
+      <title>Data Pubblicazione</title>
+    </field>
+    <field name="data_stampa"
+           type="zope.schema.TextLine"
+    >
+      <description>La data di stampa nella forma YYYYMM oppure YYYYMMDD</description>
+      <required>False</required>
+      <title>Data Stampa</title>
+    </field>
+ "Tipografia" to Metadata CT
+    <field name="tipografia"
+           type="zope.schema.TextLine"
+    >
+      <description>Il nome della tipografia che ha stampato il libro</description>
+      <required>False</required>
+      <title>Tipografia</title>
+    </field>
+    <field name="edizione"
+           type="zope.schema.TextLine"
+    >
+      <description>Numero di edizione</description>
+      <required>False</required>
+      <title>Edizione</title>
+    </field>
+    <field name="data_commercializzazione"
+           type="zope.schema.TextLine"
+    >
+      <description>Data nella forma YYYYMM oppure YYYYMMDD</description>
+      <required>False</required>
+      <title>Data commercializzazione</title>
+    </field>
+    <field name="luogo_di_pubblicazione"
+           type="zope.schema.TextLine"
+    >
+      <description>La citt&#224; dove &#232; stato pubblicato. Assume di default che sia in Italia.</description>
+      <title>Luogo di Pubblicazione</title>
+    </field>
+    <field name="collana"
+           type="zope.schema.TextLine"
+    >
+      <description>Nome della collana</description>
+      <required>False</required>
+      <title>Collana</title>
+    </field>
+    <field name="collana_issn"
+           type="zope.schema.TextLine"
+    >
+      <description />
+      <required>False</required>
+      <title>Collana ISSN</title>
+    </field>
+    <field name="collana_numero"
+           type="zope.schema.TextLine"
+    >
+      <description />
+      <required>False</required>
+      <title>Collana numero</title>
+    </field>
+    <field name="abstract"
+           type="zope.schema.Text"
+    >
+      <description>Testo della quarta di copertina</description>
+      <title>Abstract</title>
+    </field>
+    <field name="lingua_originale"
+           type="zope.schema.TextLine"
+    >
+      <description>Lingua del testo originale, in caso di traduzioni. In ISO 639, v. https://ns.editeur.org/onix/en/74</description>
+      <required>False</required>
+      <title>Lingua originale</title>
+    </field>
+    <field name="titolo_originale"
+           type="zope.schema.TextLine"
+    >
+      <description>Titolo del testo originale, se traduzione</description>
+      <required>False</required>
+      <title>Titolo originale</title>
+    </field>
+    <field name="altezza"
+           type="zope.schema.TextLine"
+    >
+      <description>in mm</description>
+      <title>Altezza</title>
+    </field>
+    <field name="larghezza"
+           type="zope.schema.TextLine"
+    >
+      <description>in mm</description>
+      <title>Larghezza</title>
+    </field>
+    <field name="spessore"
+           type="zope.schema.TextLine"
+    >
+      <description>in mm</description>
+      <title>Spessore</title>
+    </field>
+    <field name="pagine"
+           type="zope.schema.TextLine"
+    >
+      <description>Pagine del corpo (senza copertina)</description>
+      <required>False</required>
+      <title>Pagine</title>
+    </field>
+    <field name="tomi"
+           type="zope.schema.TextLine"
+    >
+      <description>Numero dei tomi</description>
+      <required>False</required>
+      <title>Tomi</title>
+    </field>
+    <field name="rilegatura"
+           type="zope.schema.Choice"
+    >
+      <description>Tipo di rilegatura</description>
+      <title>Rilegatura</title>
+      <values>
+        <element>BB - Copertina rigida</element>
+        <element>BC - Copertina flessibile</element>
+      </values>
+    </field>
+    <field name="anno_copyright"
+           type="zope.schema.TextLine"
+    >
+      <description />
+      <required>False</required>
+      <title>Anno Copyright</title>
+    </field>
+    <field name="scolastica"
+           type="zope.schema.Bool"
+    >
+      <description />
+      <required>False</required>
+      <title>Scolastica</title>
+      <form:widget type="z3c.form.browser.radio.RadioFieldWidget" />
+    </field>
+    <field name="illustrato"
+           type="zope.schema.Bool"
+    >
+      <description />
+      <required>False</required>
+      <title>Illustrato</title>
+      <form:widget type="z3c.form.browser.radio.RadioFieldWidget" />
+    </field>
+    <field name="immagine_di_copertina"
+           type="plone.namedfile.field.NamedBlobFile"
+    >
+      <description />
+      <required>False</required>
+      <title>Immagine di copertina</title>
+    </field>
+    <field name="prezzo"
+           type="zope.schema.TextLine"
+    >
+      <description>Prezzo senza IVA</description>
+      <title>Prezzo</title>
+    </field>
+    <field name="prezzo_con_iva"
+           type="zope.schema.TextLine"
+    >
+      <description />
+      <title>Prezzo con IVA</title>
+    </field>
+    <field name="pubblico"
+           type="zope.schema.Choice"
+    >
+      <description />
+      <required>False</required>
+      <title>Pubblico</title>
+      <values>
+        <element>01 - Generale</element>
+        <element>02 - Bambini</element>
+        <element>03 - Ragazzi</element>
+        <element>04 - Scuola</element>
+        <element>05 - Universit&#224;</element>
+        <element>06 - Professionale</element>
+        <element>08 - Adulti</element>
+      </values>
+    </field>
+    <field name="classificazione"
+           type="zope.schema.TextLine"
+    >
+      <description>Classificazione Thema 1.6, usare i codici alfanumerici di https://ns.editeur.org/thema/en: Codice; Codice; Codice; ...</description>
+      <required>False</required>
+      <title>Classificazione</title>
+    </field>
+  </schema>
+</model>
