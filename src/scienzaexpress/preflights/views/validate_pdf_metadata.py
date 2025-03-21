@@ -75,9 +75,7 @@ class CheckResult:
     """If any field used in the check was empty, here we should find a warning string."""
 
     def __str__(self):
-        warning_message = (
-            f"🟡 {self.warning.replace('\n', '; ')} - " if self.warning else ""
-        )
+        warning_message = f"🟡 {self.warning.replace('\n', '; ')} - " if self.warning else ""
         if self.good:
             return f'{warning_message}🟢 {self.file_obj.file.filename} - found "{self.target}" on page {self.check.page} (searched "{self.check.target}")'
         else:
@@ -139,7 +137,7 @@ class ValidatePdfMetadata(BrowserView):
     )
 
     def __call__(self):
-        if obj := self.find_publication_metadata_object():
+        if obj := ValidatePdfMetadata.find_publication_metadata_object(self.context):
             self.publication_metadata_object = obj
             self.results = self.check_all_pdfs()
         else:
@@ -154,7 +152,8 @@ class ValidatePdfMetadata(BrowserView):
 
         return self.index()
 
-    def find_publication_metadata_object(self) -> IDexterityItem | None:
+    @staticmethod
+    def find_publication_metadata_object(context) -> IDexterityItem | None:
         """Find the publication-metadata object related to this folder.
 
         We'll look for a PublicationMetadata object inside a folder named "XML",
@@ -163,7 +162,7 @@ class ValidatePdfMetadata(BrowserView):
         The first such object that we find "wins".
         """
         xml_folder = None
-        for parent in self.context.aq_chain:
+        for parent in context.aq_chain:
             if xml_folder := parent.get("xml", None):
                 break
             if ISiteRoot.providedBy(parent):
@@ -184,7 +183,7 @@ class ValidatePdfMetadata(BrowserView):
         else:
             publication_metadata_object = publication_metadata_objects[0]
 
-        self._enrich_pmo(publication_metadata_object)
+        ValidatePdfMetadata._enrich_pmo(publication_metadata_object)
 
         return publication_metadata_object
 

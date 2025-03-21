@@ -8,6 +8,22 @@
   <!-- -*- extra stuff goes here -*- -->
 
   <browser:page
+      name="xml-generator-onix"
+      for="plone.app.contenttypes.interfaces.IFolder"
+      class=".onix_generator.OnixGenerator"
+      template="onix_generator.pt"
+      permission="zope2.View"
+      />
+
+  <browser:page
+      name="xml-generator-app"
+      for="plone.app.contenttypes.interfaces.IFolder"
+      class=".onix_generator.AppGenerator"
+      template="onix_generator.pt"
+      permission="zope2.View"
+      />
+
+  <browser:page
       name="validate-pdf-metadata"
       for="plone.app.contenttypes.interfaces.IFolder"
       class=".validate_pdf_metadata.ValidatePdfMetadata"

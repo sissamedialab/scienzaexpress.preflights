@@ -5,18 +5,20 @@
         i18n:domain="scienzaexpress.risetypes"
 >
   <!-- TODO: correctly setup "actions" see https://5.docs.plone.org/develop/plone/functionality/actions.html -->
-  <action action_id="check-images"
-          category="object"
-          condition_expr="not:object/@@plone_lock_info/is_locked_for_current_user|python:True"
-          icon_expr="string:ui-checks-grid"
-          title="Check images"
-          url_expr="string:${object_url}/check-images"
-          visible="True"
-          i18n:attributes="title"
-          i18n:domain="plone"
-  >
-    <permission value="Modify portal content" />
-  </action>
+
+  <!-- "check-images" (identify raster images) probably not needed -->
+  <!-- <action action_id="check-images" -->
+  <!--         category="object" -->
+  <!--         condition_expr="not:object/@@plone_lock_info/is_locked_for_current_user|python:True" -->
+  <!--         icon_expr="string:ui-checks-grid" -->
+  <!--         title="Check images" -->
+  <!--         url_expr="string:${object_url}/check-images" -->
+  <!--         visible="True" -->
+  <!--         i18n:attributes="title" -->
+  <!--         i18n:domain="plone" -->
+  <!-- > -->
+  <!--   <permission value="Modify portal content" /> -->
+  <!-- </action> -->
 
   <action action_id="pdf-preflight"
           category="object"
@@ -38,6 +40,32 @@
           icon_expr="string:ui-checks-grid"
           title="Validate PDF wrt metadata"
           url_expr="string:${object_url}/validate-pdf-metadata"
+          visible="True"
+          i18n:attributes="title"
+          i18n:domain="plone"
+  >
+    <permission value="Modify portal content" />
+  </action>
+
+  <action action_id="xml-generator-onix"
+          category="object"
+          condition_expr="not:object/@@plone_lock_info/is_locked_for_current_user|python:True"
+          icon_expr="string:filetype-xml"
+          title="Genera XML simil-Onix"
+          url_expr="string:${object_url}/xml-generator-onix"
+          visible="True"
+          i18n:attributes="title"
+          i18n:domain="plone"
+  >
+    <permission value="Modify portal content" />
+  </action>
+
+  <action action_id="xml-generator-app"
+          category="object"
+          condition_expr="not:object/@@plone_lock_info/is_locked_for_current_user|python:True"
+          icon_expr="string:filetype-raw"
+          title="Genera XML app-ready"
+          url_expr="string:${object_url}/xml-generator-app"
           visible="True"
           i18n:attributes="title"
           i18n:domain="plone"
