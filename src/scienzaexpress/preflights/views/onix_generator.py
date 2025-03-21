@@ -560,12 +560,12 @@ class OnixGenerator(BaseGenerator):
         book_meta = other  # 🤮 please refactor me!!!
         xml_tree = generate_onix_message(book_meta, is_for_ISBN=False)
         self.xml_obj = self.save_xml_file(
-            file_id="xml_onix",
-            title="Onix-like XML",
+            file_id="xml_isbn",
+            title="XML per ISBN",
             xml_tree=xml_tree,
-            description="Metadata in formato Onix-like",
-            message_warning="XML-ONIX file sovrascritto!",
-            message_success="XML-ONIX file generato.",
+            description="Metadata in formato Onix per ISBN",
+            message_warning="XML per ISBN file sovrascritto!",
+            message_success="XML per ISBN file generato.",
         )
 
         return self.context.REQUEST.RESPONSE.redirect(
