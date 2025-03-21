@@ -558,7 +558,7 @@ class OnixGenerator(BaseGenerator):
             return self.index()
 
         book_meta = other  # 🤮 please refactor me!!!
-        xml_tree = generate_onix_message(book_meta)
+        xml_tree = generate_onix_message(book_meta, is_for_ISBN=False)
         self.xml_obj = self.save_xml_file(
             file_id="xml_onix",
             title="Onix-like XML",
