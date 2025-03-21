@@ -502,8 +502,10 @@ class BaseGenerator(BrowserView):
             return (False, reasons_failed)
         return (
             False,
-            "Production Metadata non trovati. Assicurarsi che esista un folder XML"
-            ' e che questo contenga un oggetto di tipo "Production Metadata"',
+            [
+                "Production Metadata non trovati. Assicurarsi che esista un folder XML"
+                ' e che questo contenga un oggetto di tipo "Production Metadata"',
+            ],
         )
 
     def save_xml_file(
