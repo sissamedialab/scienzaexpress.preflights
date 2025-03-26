@@ -39,6 +39,12 @@ IT_MONTHS = {
 }
 
 
+missing_metadata_message = """Metadata non trovati.
+Prego assicurarsi che esista un (unico) oggetto di tipo Publication Metadata
+in una cartella denominata "XML"
+"""
+
+
 @dataclasses.dataclass(frozen=True)
 class Check:
     """
@@ -142,11 +148,9 @@ class ValidatePdfMetadata(BrowserView):
             self.results = self.check_all_pdfs()
         else:
             plone.api.portal.show_message(
-                message="Metadata non trovati."
-                " Prego assicurarsi che esista un (unico) oggetto di tipo Publication Metadta"
-                ' in una cartella denominata "XML"',
+                message=missing_metadata_message,
                 request=self.request,
-                type="warning",
+                type="error",
             )
             self.results = []
 

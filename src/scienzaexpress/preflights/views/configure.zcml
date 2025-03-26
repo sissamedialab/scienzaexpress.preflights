@@ -8,6 +8,14 @@
   <!-- -*- extra stuff goes here -*- -->
 
   <browser:page
+      name="files-dumper"
+      for="plone.app.contenttypes.interfaces.IFolder"
+      class=".files_dumper.FilesDumper"
+      template="files_dumper.pt"
+      permission="zope2.View"
+      />
+
+  <browser:page
       name="xml-generator-onix"
       for="plone.app.contenttypes.interfaces.IFolder"
       class=".onix_generator.OnixGenerator"
