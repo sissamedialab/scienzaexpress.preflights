@@ -6,7 +6,7 @@ from zope.interface import implementer
 class IPublicationMetadata(model.Schema):
     """Marker interface for PublicationMetadata."""
 
-    model.load("publication_metadata.xml")
+    model.load("metadata.xml")
 
 
 @implementer(IPublicationMetadata)

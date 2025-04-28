@@ -3,7 +3,7 @@ from pathlib import Path
 from plone.dexterity.interfaces import IDexterityItem
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.Five.browser import BrowserView
-from scienzaexpress.preflights.content.publication_metadata import IPublicationMetadata
+from scienzaexpress.preflights.content.metadata import IPublicationMetadata
 from zope.interface import implementer
 from zope.interface import Interface
 from zope.schema import getFieldsInOrder
@@ -143,8 +143,8 @@ class ValidatePdfMetadata(BrowserView):
     )
 
     def __call__(self):
-        if obj := ValidatePdfMetadata.find_publication_metadata_object(self.context):
-            self.publication_metadata_object = obj
+        if obj := ValidatePdfMetadata.find_metadata_object(self.context):
+            self.metadata_object = obj
             self.results = self.check_all_pdfs()
         else:
             plone.api.portal.show_message(
@@ -157,7 +157,7 @@ class ValidatePdfMetadata(BrowserView):
         return self.index()
 
     @staticmethod
-    def find_publication_metadata_object(context) -> IDexterityItem | None:
+    def find_metadata_object(context) -> IDexterityItem | None:
         """Find the publication-metadata object related to this folder.
 
         We'll look for a PublicationMetadata object inside a folder named "XML",
@@ -174,22 +174,22 @@ class ValidatePdfMetadata(BrowserView):
         if not xml_folder:
             return None
 
-        publication_metadata_objects = xml_folder.listFolderContents(
+        metadata_objects = xml_folder.listFolderContents(
             # NB: use the human-friendly type name (with the space in name)!
             contentFilter={"Type": "Metadata"},
         )
-        if len(publication_metadata_objects) > 1:
+        if len(metadata_objects) > 1:
             # TODO: issue a warning!
-            publication_metadata_object = publication_metadata_objects[0]
-        elif len(publication_metadata_objects) == 0:
+            metadata_object = metadata_objects[0]
+        elif len(metadata_objects) == 0:
             # let callee deal with this problem 😈
             return None
         else:
-            publication_metadata_object = publication_metadata_objects[0]
+            metadata_object = metadata_objects[0]
 
-        ValidatePdfMetadata._enrich_pmo(publication_metadata_object)
+        ValidatePdfMetadata._enrich_pmo(metadata_object)
 
-        return publication_metadata_object
+        return metadata_object
 
     @staticmethod
     def _enrich_pmo(pmo: IDexterityItem) -> None:
@@ -326,13 +326,13 @@ class ValidatePdfMetadata(BrowserView):
                 msg = f'Badly defined check {check}. Field names should start with "m."'
                 raise ValueError(msg)
             field_name = name.replace("m.", "")
-            value = getattr(self.publication_metadata_object, field_name, None)
+            value = getattr(self.metadata_object, field_name, None)
             if not value:
                 # We could have a missing field or an empty value for an existing field.
                 # ATM we don't need to be aware of the difference.
                 warning += f"Empty field {name}. Result is undefined."
 
-        target = check.target.format(m=self.publication_metadata_object)
+        target = check.target.format(m=self.metadata_object)
         good = target in stdout
         if not good:
             # try harder: ignore newlines and case

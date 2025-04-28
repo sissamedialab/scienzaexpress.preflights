@@ -21,7 +21,7 @@ class FilesDumper(BrowserView):
     """Dump files of the current folder into app-friendly directory."""
 
     def __call__(self):
-        pmo = ValidatePdfMetadata.find_publication_metadata_object(self.context)
+        pmo = ValidatePdfMetadata.find_metadata_object(self.context)
         if not pmo:
             api.portal.show_message(
                 message=missing_metadata_message,

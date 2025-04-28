@@ -467,7 +467,7 @@ class BaseGenerator(BrowserView):
 
     def get_metadata(self) -> tuple[bool, BookMetadata | list[str]]:
         """Return metadata suitable to build an Onix-like or App-ready XML."""
-        if pmo := ValidatePdfMetadata.find_publication_metadata_object(self.context):
+        if pmo := ValidatePdfMetadata.find_metadata_object(self.context):
             # TODO: review this setup: validation functions don't like None-values
             #       maybe I should use empty-strings in the publication-metadata obj?
             #       or maybe I should add a method to publication-metadata class

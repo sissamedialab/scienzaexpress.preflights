@@ -4,7 +4,7 @@
 #
 # Run this robot test stand-alone:
 #
-#  $ bin/test -s scienzaexpress.preflights -t test_publication_metadata.robot --all
+#  $ bin/test -s scienzaexpress.preflights -t test_metadata.robot --all
 #
 # Run this robot test with robot server (which is faster):
 #
@@ -14,7 +14,7 @@
 #
 # 2) Run robot tests:
 #
-# $ bin/robot /src/scienzaexpress/preflights/tests/robot/test_publication_metadata.robot
+# $ bin/robot /src/scienzaexpress/preflights/tests/robot/test_metadata.robot
 #
 # See the http://docs.plone.org for further details (search for robot
 # framework).
@@ -59,7 +59,7 @@ an add Metadata form
   Go To  ${PLONE_URL}/++add++Metadata
 
 a Metadata 'My Metadata'
-  Create content  type=Metadata  id=my-publication_metadata  title=My Metadata
+  Create content  type=Metadata  id=my-metadata  title=My Metadata
 
 # --- WHEN -------------------------------------------------------------------
 
@@ -70,7 +70,7 @@ I submit the form
   Click Button  Save
 
 I go to the Metadata view
-  Go To  ${PLONE_URL}/my-publication_metadata
+  Go To  ${PLONE_URL}/my-metadata
   Wait until page contains  Site Map
 
 
