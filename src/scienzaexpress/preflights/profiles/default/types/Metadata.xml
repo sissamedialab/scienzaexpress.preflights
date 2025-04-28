@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <object xmlns:i18n="http://xml.zope.org/namespaces/i18n"
         meta_type="Dexterity FTI"
-        name="Publication Metadata"
+        name="Metadata"
         i18n:domain="scienzaexpress.preflights"
 >
 
   <!-- Basic properties -->
   <property name="title"
             i18n:translate=""
-  >Publication Metadata</property>
+  >Metadata</property>
   <property name="description"
             i18n:translate=""
   >Metadata needed for publication</property>
 
   <property name="allow_discussion">False</property>
-  <property name="factory">Publication Metadata</property>
+  <property name="factory">Metadata</property>
   <property name="icon_expr">string:clipboard-data</property>
   <property name="link_target" />
 
@@ -52,7 +52,7 @@
   </property>
 
   <!-- View information -->
-  <property name="add_view_expr">string:${folder_url}/++add++Publication Metadata</property>
+  <property name="add_view_expr">string:${folder_url}/++add++Metadata</property>
   <property name="default_view">view</property>
   <property name="default_view_fallback">False</property>
   <property name="immediate_view">view</property>

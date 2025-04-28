@@ -28,17 +28,17 @@ class PublicationMetadataIntegrationTest(unittest.TestCase):
         self.parent = self.portal
 
     def test_ct_publication_metadata_schema(self):
-        fti = queryUtility(IDexterityFTI, name="Publication Metadata")
+        fti = queryUtility(IDexterityFTI, name="Metadata")
         schema = fti.lookupSchema()
-        schema_name = portalTypeToSchemaName("Publication Metadata")
+        schema_name = portalTypeToSchemaName("Metadata")
         self.assertIn(schema_name.lstrip("plone_0_"), schema.getName())
 
     def test_ct_publication_metadata_fti(self):
-        fti = queryUtility(IDexterityFTI, name="Publication Metadata")
+        fti = queryUtility(IDexterityFTI, name="Metadata")
         self.assertTrue(fti)
 
     def test_ct_publication_metadata_factory(self):
-        fti = queryUtility(IDexterityFTI, name="Publication Metadata")
+        fti = queryUtility(IDexterityFTI, name="Metadata")
         factory = fti.factory
         createObject(factory)
 
@@ -46,7 +46,7 @@ class PublicationMetadataIntegrationTest(unittest.TestCase):
         setRoles(self.portal, TEST_USER_ID, ["Contributor"])
         obj = api.content.create(
             container=self.portal,
-            type="Publication Metadata",
+            type="Metadata",
             id="publication_metadata",
         )
 
@@ -59,5 +59,5 @@ class PublicationMetadataIntegrationTest(unittest.TestCase):
 
     def test_ct_publication_metadata_globally_addable(self):
         setRoles(self.portal, TEST_USER_ID, ["Contributor"])
-        fti = queryUtility(IDexterityFTI, name="Publication Metadata")
+        fti = queryUtility(IDexterityFTI, name="Metadata")
         self.assertTrue(fti.global_allow, f"{fti.id} is not globally addable!")

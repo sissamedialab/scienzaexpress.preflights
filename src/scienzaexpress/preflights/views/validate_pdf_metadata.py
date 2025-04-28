@@ -40,7 +40,7 @@ IT_MONTHS = {
 
 
 missing_metadata_message = """Metadata non trovati.
-Prego assicurarsi che esista un (unico) oggetto di tipo Publication Metadata
+Prego assicurarsi che esista un (unico) oggetto di tipo Metadata
 in una cartella denominata "XML"
 """
 
@@ -98,7 +98,7 @@ class ValidatePdfMetadata(BrowserView):
     Validate a PDF with respect to its metadata.
 
     We expect to find some strings (targets) on some pages.
-    These targets can be parametric wrt a Publication Metadata object.
+    These targets can be parametric wrt a Metadata object.
 
     See the definition of Check() for details.
     """
@@ -176,7 +176,7 @@ class ValidatePdfMetadata(BrowserView):
 
         publication_metadata_objects = xml_folder.listFolderContents(
             # NB: use the human-friendly type name (with the space in name)!
-            contentFilter={"Type": "Publication Metadata"},
+            contentFilter={"Type": "Metadata"},
         )
         if len(publication_metadata_objects) > 1:
             # TODO: issue a warning!

@@ -34,18 +34,18 @@ Test Teardown  Close all browsers
 
 *** Test Cases ***************************************************************
 
-Scenario: As a site administrator I can add a Publication Metadata
+Scenario: As a site administrator I can add a Metadata
   Given a logged-in site administrator
-    and an add Publication Metadata form
-   When I type 'My Publication Metadata' into the title field
+    and an add Metadata form
+   When I type 'My Metadata' into the title field
     and I submit the form
-   Then a Publication Metadata with the title 'My Publication Metadata' has been created
+   Then a Metadata with the title 'My Metadata' has been created
 
-Scenario: As a site administrator I can view a Publication Metadata
+Scenario: As a site administrator I can view a Metadata
   Given a logged-in site administrator
-    and a Publication Metadata 'My Publication Metadata'
-   When I go to the Publication Metadata view
-   Then I can see the Publication Metadata title 'My Publication Metadata'
+    and a Metadata 'My Metadata'
+   When I go to the Metadata view
+   Then I can see the Metadata title 'My Metadata'
 
 
 *** Keywords *****************************************************************
@@ -55,11 +55,11 @@ Scenario: As a site administrator I can view a Publication Metadata
 a logged-in site administrator
   Enable autologin as  Site Administrator
 
-an add Publication Metadata form
-  Go To  ${PLONE_URL}/++add++Publication Metadata
+an add Metadata form
+  Go To  ${PLONE_URL}/++add++Metadata
 
-a Publication Metadata 'My Publication Metadata'
-  Create content  type=Publication Metadata  id=my-publication_metadata  title=My Publication Metadata
+a Metadata 'My Metadata'
+  Create content  type=Metadata  id=my-publication_metadata  title=My Metadata
 
 # --- WHEN -------------------------------------------------------------------
 
@@ -69,18 +69,18 @@ I type '${title}' into the title field
 I submit the form
   Click Button  Save
 
-I go to the Publication Metadata view
+I go to the Metadata view
   Go To  ${PLONE_URL}/my-publication_metadata
   Wait until page contains  Site Map
 
 
 # --- THEN -------------------------------------------------------------------
 
-a Publication Metadata with the title '${title}' has been created
+a Metadata with the title '${title}' has been created
   Wait until page contains  Site Map
   Page should contain  ${title}
   Page should contain  Item created
 
-I can see the Publication Metadata title '${title}'
+I can see the Metadata title '${title}'
   Wait until page contains  Site Map
   Page should contain  ${title}
