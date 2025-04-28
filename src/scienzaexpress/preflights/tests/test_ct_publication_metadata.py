@@ -18,7 +18,7 @@ except ImportError:
     from plone.dexterity.utils import portalTypeToSchemaName
 
 
-class PublicationMetadataIntegrationTest(unittest.TestCase):
+class MetadataIntegrationTest(unittest.TestCase):
     layer = SCIENZAEXPRESS_PREFLIGHTS_INTEGRATION_TESTING
 
     def setUp(self):

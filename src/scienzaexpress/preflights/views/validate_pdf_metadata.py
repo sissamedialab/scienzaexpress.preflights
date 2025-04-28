@@ -3,7 +3,7 @@ from pathlib import Path
 from plone.dexterity.interfaces import IDexterityItem
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.Five.browser import BrowserView
-from scienzaexpress.preflights.content.metadata import IPublicationMetadata
+from scienzaexpress.preflights.content.metadata import IMetadata
 from zope.interface import implementer
 from zope.interface import Interface
 from zope.schema import getFieldsInOrder
@@ -53,7 +53,7 @@ class Check:
     Consists on a page number
     and a (format-ready) string.
 
-    The checker should format the string using a PublicationMetadata object as
+    The checker should format the string using a Metadata object as
     "context".
 
     See examples in ValidatePdfMetadata.checks
@@ -160,7 +160,7 @@ class ValidatePdfMetadata(BrowserView):
     def find_metadata_object(context) -> IDexterityItem | None:
         """Find the publication-metadata object related to this folder.
 
-        We'll look for a PublicationMetadata object inside a folder named "XML",
+        We'll look for a Metadata object inside a folder named "XML",
         walking back from the current folder up to the site root.
 
         The first such object that we find "wins".
@@ -212,7 +212,7 @@ class ValidatePdfMetadata(BrowserView):
         """
         yyyymm = 6
         yyyymmdd = 8
-        for name, _ in getFieldsInOrder(IPublicationMetadata):
+        for name, _ in getFieldsInOrder(IMetadata):
             if name.startswith("data_"):
                 value = getattr(pmo, name)
                 if not value:

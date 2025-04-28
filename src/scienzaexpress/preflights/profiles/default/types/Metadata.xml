@@ -21,7 +21,7 @@
   <!-- Hierarchy control -->
   <property name="global_allow">True</property>
   <!-- Schema, class and security -->
-  <property name="add_permission">scienzaexpress.preflights.AddPublicationMetadata</property>
+  <property name="add_permission">scienzaexpress.preflights.AddMetadata</property>
   <property name="klass">plone.dexterity.content.Item</property>
   <property name="model_file">scienzaexpress.preflights.content:metadata.xml</property>
   <property name="model_source" />

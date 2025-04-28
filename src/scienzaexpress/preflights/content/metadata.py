@@ -3,12 +3,12 @@ from plone.supermodel import model
 from zope.interface import implementer
 
 
-class IPublicationMetadata(model.Schema):
-    """Marker interface for PublicationMetadata."""
+class IMetadata(model.Schema):
+    """Marker interface for Metadata."""
 
     model.load("metadata.xml")
 
 
-@implementer(IPublicationMetadata)
-class PublicationMetadata(Item):
+@implementer(IMetadata)
+class Metadata(Item):
     """Metadata for RISE types."""

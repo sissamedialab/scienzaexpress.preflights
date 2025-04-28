@@ -4,7 +4,7 @@
     <!-- -*- extra stuff goes here -*- -->
 
     <permission acquire="True"
-                name="scienzaexpress.preflights: Add PublicationMetadata"
+                name="scienzaexpress.preflights: Add Metadata"
     >
       <role name="Manager" />
       <role name="Site Administrator" />

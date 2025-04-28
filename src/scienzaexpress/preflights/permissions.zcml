@@ -7,8 +7,8 @@
   <!-- -*- extra stuff goes here -*- -->
 
   <permission
-      id="scienzaexpress.preflights.AddPublicationMetadata"
-      title="scienzaexpress.preflights: Add PublicationMetadata"
+      id="scienzaexpress.preflights.AddMetadata"
+      title="scienzaexpress.preflights: Add Metadata"
       />
 
 
