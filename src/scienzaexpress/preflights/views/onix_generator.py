@@ -5,6 +5,9 @@ from plone import api
 from plone.dexterity.interfaces import IDexterityItem
 from plone.namedfile.file import NamedBlobFile
 from Products.Five.browser import BrowserView
+from scienzaexpress.preflights.views.validate_pdf_metadata import (
+    missing_metadata_message,
+)
 from scienzaexpress.preflights.views.validate_pdf_metadata import ValidatePdfMetadata
 from zope.interface import implementer
 from zope.interface import Interface
@@ -500,13 +503,7 @@ class BaseGenerator(BrowserView):
             if validate:
                 return (True, book_meta)
             return (False, reasons_failed)
-        return (
-            False,
-            [
-                "Production Metadata non trovati. Assicurarsi che esista un folder XML"
-                ' e che questo contenga un oggetto di tipo "Production Metadata"',
-            ],
-        )
+        return (False, [missing_metadata_message])
 
     def save_xml_file(
         self,
