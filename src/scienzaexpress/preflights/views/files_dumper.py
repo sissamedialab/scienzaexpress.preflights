@@ -36,7 +36,7 @@ class FilesDumper(BrowserView):
         ctype = ctype.replace(" ", "-").lower()  # just in case...
 
         # TODO: move this variable to a registry setting for this add-on
-        root = Path.home() / "x"
+        root = Path.home() / "export"
 
         editorial_object_name = pmo.title.replace(" ", "-").lower()
         appfriendly_folder = root / ctype / editorial_object_name
