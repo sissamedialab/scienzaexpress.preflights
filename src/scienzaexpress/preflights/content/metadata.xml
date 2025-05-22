@@ -24,6 +24,13 @@
       <description />
       <title>ISBN</title>
     </field>
+    <field name="foto_autore"
+           type="plone.namedfile.field.NamedBlobImage"
+    >
+      <description>Foto dell'autore principale</description>
+      <required>False</required>
+      <title>Foto autore</title>
+    </field>
     <field name="autori"
            type="zope.schema.TextLine"
     >
