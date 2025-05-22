@@ -167,7 +167,7 @@ class ValidatePdfMetadata(BrowserView):
         """
         xml_folder = None
         for parent in context.aq_chain:
-            if xml_folder := parent.get("xml", None):
+            if xml_folder := parent.get("XML", None):
                 break
             if ISiteRoot.providedBy(parent):
                 break
