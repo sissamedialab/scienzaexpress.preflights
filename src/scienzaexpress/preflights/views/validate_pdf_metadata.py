@@ -176,7 +176,7 @@ class ValidatePdfMetadata(BrowserView):
 
         metadata_objects = xml_folder.listFolderContents(
             # NB: use the human-friendly type name (with the space in name)!
-            contentFilter={"Type": "Metadata"},
+            contentFilter={"portal_type": "Metadata"},
         )
         if len(metadata_objects) > 1:
             # TODO: issue a warning!
@@ -351,7 +351,7 @@ class ValidatePdfMetadata(BrowserView):
         """Collect all Files that have .pdf extension."""
         file_objs = []
         pdf_types = ("application/pdf",)
-        for obj in self.context.listFolderContents(contentFilter={"Type": "File"}):
+        for obj in self.context.listFolderContents(contentFilter={"mime_type": "application/pdf"}):
             if obj.file.contentType in pdf_types:
                 file_objs.append(obj)
         return file_objs

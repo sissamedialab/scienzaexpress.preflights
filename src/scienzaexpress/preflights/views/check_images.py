@@ -28,7 +28,7 @@ class CheckImages(BrowserView):
         self.results = []
         # Assume context is a folder; iterate over immediate child objects
         # for obj in self.context.objectValues("Image"):  AI-ERROR
-        for obj in self.context.listFolderContents(contentFilter={"Type": "Image"}):
+        for obj in self.context.listFolderContents(contentFilter={"portal_type": "Image"}):
             # Ensure the object has an image field named 'image'
             if not hasattr(obj, "image"):
                 continue
@@ -52,9 +52,7 @@ class CheckImages(BrowserView):
 
             # Call ImageMagick's 'identify' command on the temporary file.
             try:
-                proc = subprocess.run(
-                    ["identify", temp_path], capture_output=True, text=True, check=False
-                )
+                proc = subprocess.run(["identify", temp_path], capture_output=True, text=True, check=False)
                 # Use stdout if available, else stderr.
                 output = proc.stdout.strip() or proc.stderr.strip()
             except Exception as e:

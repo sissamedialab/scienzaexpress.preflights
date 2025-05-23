@@ -148,7 +148,9 @@ class PdfPreflight(BrowserView):
         """Collect all Files that have .pdf extension."""
         file_objs = []
         pdf_types = ("application/pdf",)
-        for obj in self.context.listFolderContents(contentFilter={"Type": "File"}):
+        # Warning: do no use contentFilter={"Type": "File"}
+        # because "Type" depends on the content-type _label_!!!
+        for obj in self.context.listFolderContents(contentFilter={"mime_type": "application/pdf"}):
             if obj.file.contentType in pdf_types:
                 file_objs.append(obj)
         return file_objs

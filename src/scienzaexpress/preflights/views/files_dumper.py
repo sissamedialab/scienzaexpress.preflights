@@ -58,7 +58,7 @@ class FilesDumper(BrowserView):
         appfriendly_folder.mkdir(parents=True, exist_ok=True)
 
         files_here = self.context.listFolderContents(
-            contentFilter={"Type": "File"},
+            contentFilter={"portal_type": "File"},
         )
         for file_obj in files_here:
             with open(appfriendly_folder / file_obj.file.filename, "wb") as file_fs:
