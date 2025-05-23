@@ -1,6 +1,7 @@
 # from scienzaexpress.preflights import _
 from pathlib import Path
 from plone import api
+from Products.CMFCore.interfaces import ISiteRoot
 from Products.Five.browser import BrowserView
 from scienzaexpress.preflights.views.validate_pdf_metadata import (
     missing_metadata_message,
@@ -20,6 +21,16 @@ class IFilesDumper(Interface):
 class FilesDumper(BrowserView):
     """Dump files of the current folder into app-friendly directory."""
 
+    @staticmethod
+    def find_container_type(obj) -> str:
+        """Find the first non-folder container type for the given object."""
+        for parent in obj.aq_chain:
+            if parent.portal_type != "Folder":
+                break
+            if ISiteRoot.providedBy(parent):
+                break
+        return parent.portal_type
+
     def __call__(self):
         pmo = ValidatePdfMetadata.find_metadata_object(self.context)
         if not pmo:
@@ -30,9 +41,10 @@ class FilesDumper(BrowserView):
             )
             return self.index()
 
-        # We assume that the pmo is inside a folder named "XML",
-        # and this XML folder is inside the Type-specific object (Libro, Albo, etc.)
-        ctype = pmo.aq_parent.aq_parent.portal_type
+        # The publication-metadata object is always inside a folder named "XML",
+        # but we don't know how far from the Type-specific container (Libro, Albo, etc.)
+        # the XML folder might be. So we need to find out:
+        ctype = self.find_container_type(pmo.aq_parent)
         ctype = ctype.replace(" ", "-").lower()  # just in case...
 
         # TODO: move this variable to a registry setting for this add-on
