@@ -183,6 +183,7 @@ ignore = [
   "D212","D203",
   "CPY001",
   "DOC201",  # docstring-missing-returns ("return" is not documented in docstring)
+  "ANN204",  # return type annotation for special method
   ]
 
 fixable = ["ALL"]

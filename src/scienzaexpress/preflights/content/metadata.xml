@@ -18,7 +18,8 @@
       <required>False</required>
       <title>Sottotitolo</title>
     </field>
-    <field name="isbn"
+    <field form:validator="scienzaexpress.preflights.content.metadata.ValidateISBN"
+           name="isbn"
            type="zope.schema.TextLine"
     >
       <description />
@@ -66,26 +67,28 @@
       <title>Biografie</title>
     </field>
     <field name="data_pubblicazione"
-           type="zope.schema.TextLine"
+           type="zope.schema.Date"
     >
-      <description>La data di pubblicazione nella forma YYYYMM oppure YYYYMMDD</description>
+      <description>La data di pubblicazione</description>
       <title>Data Pubblicazione</title>
     </field>
     <field name="data_stampa"
-           type="zope.schema.TextLine"
+           type="zope.schema.Date"
     >
-      <description>La data di stampa nella forma YYYYMM oppure YYYYMMDD</description>
+      <description>La data di stampa</description>
       <required>False</required>
       <title>Data Stampa</title>
     </field>
- "Tipografia" to Metadata CT
+
     <field name="tipografia"
-           type="zope.schema.TextLine"
+           type="zope.schema.Choice"
     >
+      <source>scienzaexpress.preflights.vocabularies.metadata_vocabularies.dummy_binder</source>
       <description>Il nome della tipografia che ha stampato il libro</description>
       <required>False</required>
       <title>Tipografia</title>
     </field>
+
     <field name="edizione"
            type="zope.schema.TextLine"
     >
@@ -94,9 +97,8 @@
       <title>Edizione</title>
     </field>
     <field name="data_commercializzazione"
-           type="zope.schema.TextLine"
+           type="zope.schema.Date"
     >
-      <description>Data nella forma YYYYMM oppure YYYYMMDD</description>
       <required>False</required>
       <title>Data commercializzazione</title>
     </field>
@@ -148,29 +150,34 @@
       <title>Titolo originale</title>
     </field>
     <field name="altezza"
-           type="zope.schema.TextLine"
+           type="zope.schema.Int"
     >
-      <description>in mm</description>
+      <description>in mm, senza virgole</description>
       <title>Altezza</title>
+      <min>1</min>
     </field>
     <field name="larghezza"
-           type="zope.schema.TextLine"
+           type="zope.schema.Int"
     >
-      <description>in mm</description>
+      <description>in mm, senza virgole</description>
       <title>Larghezza</title>
+      <min>1</min>
     </field>
     <field name="spessore"
-           type="zope.schema.TextLine"
+           type="zope.schema.Int"
     >
-      <description>in mm</description>
+      <description>in mm, senza virgole</description>
       <title>Spessore</title>
+      <min>1</min>
     </field>
-    <field name="pagine"
-           type="zope.schema.TextLine"
+    <field form:validator="scienzaexpress.preflights.content.metadata.ValidateEven"
+           name="pagine"
+           type="zope.schema.Int"
     >
       <description>Pagine del corpo (senza copertina)</description>
       <required>False</required>
       <title>Pagine</title>
+      <min>2</min>
     </field>
     <field name="tomi"
            type="zope.schema.TextLine"
@@ -219,17 +226,12 @@
       <required>False</required>
       <title>Immagine di copertina</title>
     </field>
-    <field name="prezzo"
-           type="zope.schema.TextLine"
-    >
-      <description>Prezzo senza IVA</description>
-      <title>Prezzo</title>
-    </field>
     <field name="prezzo_con_iva"
-           type="zope.schema.TextLine"
+           type="zope.schema.Float"
     >
-      <description />
-      <title>Prezzo con IVA</title>
+      <description>Prezzo con IVA</description>
+      <title>Prezzo di copertina</title>
+      <min>1.0</min>
     </field>
     <field name="pubblico"
            type="zope.schema.Choice"

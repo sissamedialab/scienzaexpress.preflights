@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from dataclasses import field
 from datetime import datetime
 from lxml import etree
 from plone import api
@@ -37,7 +38,7 @@ class BookMetadata:
     isbn: str
     # P.3
     type: str
-    measures: list[str]  # H x L x T (mm)
+    measures: list[int]  # H x L x T (mm)
     # P.5
     collection_title: str
     collection_issn: str
@@ -63,10 +64,14 @@ class BookMetadata:
     abstract: str
     # P.20
     pub_city: str
-    pub_date: str
+    pub_date: datetime.date
     # P.26
-    price: str
-    price_tax: str
+    price: float = field(init=False)
+    price_tax: float
+
+    def __post_init__(self):
+        """Compute price with VAT. See rise#60."""
+        self.price = self.price_tax / 1.04
 
     def validate_translation(self) -> tuple[bool, list[str] | None]:
         if len(self.translators) > 0:
@@ -82,54 +87,37 @@ class BookMetadata:
         return (True, None)
 
     def validate_collection(self) -> tuple[bool, list[str] | None]:
-        """Check if all collection data are present."""
-        if self.collection_title:
-            if self.collection_issn:
-                return (True, None)
-            return (False, ['Assicurarsi che "titolo collana" e "issn collana" siano definiti'])
-        return (True, None)
-
-    def validate_pages(self) -> tuple[bool, list[str] | None]:
-        """Check if pages are number."""
-        if not self.pages.isdigit():
-            return (False, [f"Assicurarsi che il numero di pagine ({self.pages}) sia un intero."])
-        if self.pages[0] == "0":
-            return (False, [f"Assicurarsi che il numero di pagine ({self.pages}) sia maggiore di zero."])
-        return (True, None)
-
-    def validate_isbn(self) -> tuple[bool, list[str] | None]:
-        """Check ISBN 15 format."""
-        length = 13
-        if len(self.isbn) != length:
-            return (False, [f"Assicurarsi che l'ISBN ({self.isbn}) abbia {length} caratteri."])
-        if not self.isbn.isdigit():
-            return (False, [f"Assicurarsi che l'ISBN ({self.isbn}) sia un intero (no trattini!)."])
-        return (True, None)
-
-    def validate_measures(self) -> tuple[bool, list[str] | None]:
         """
-        Check if all measures are valid.
+        Check if all collection data are present.
 
-        Raises:
-            ValueError if there are not exacly 3 measures.
+        SE uses collection_title more loosely than ONIX
+        - for SE, collection_title without collection_issn is OK
+        - for ONIX, either both or none should be available.
 
         """
-        h_l_t = 3
-        if len(self.measures) != h_l_t:
-            msg = "Misure scombinate: {self.measures=}. Please check your code!"
-            raise ValueError(msg)
-
-        failures = []
-        msgs = {
-            0: "Assicurarsi che l'altezza ({measure}) sia un intero.",
-            1: "Assicurarsi che la larghezza ({measure}) sia un intero.",
-            2: "Assicurarsi che lo spessore ({measure}) sia un intero",
+        known_issns = {
+            "2724-0576": "Nuova Lettera Matematica",
         }
-        for i, measure in enumerate(self.measures):
-            if not measure.isdigit():
-                failures.append(msgs[i])
-        if failures:
-            return (False, "; ".join(failures))
+        if self.collection_issn and self.collection_issn in known_issns:
+            if not self.collection_title:
+                return (
+                    False,
+                    [
+                        f'Manca il titolo della collana con ISSN "{self.collection_issn}";'
+                        f""" aggiungere "{known_issns[self.collection_issn]}", oppure rimuovere l'ISSN""",
+                    ],
+                )
+            if self.collection_title != known_issns[self.collection_issn]:
+                return (
+                    False,
+                    [
+                        f'Titolo errato per la collana con ISSN "{self.collection_issn}";'
+                        f""" modificare in "{known_issns[self.collection_issn]}", oppure rimuovere l'ISSN""",
+                    ],
+                )
+        if self.collection_issn and self.collection_issn not in known_issns:
+            return (False, [f'ISSN sconosciuto. Sono permessi solo: {", ".join(known_issns.keys())}.'])
+
         return (True, None)
 
     def validate_authors(self) -> tuple[bool, list[str] | None]:
@@ -146,26 +134,6 @@ class BookMetadata:
         else:
             return (True, None)
 
-    def validate_pubdate(self) -> tuple[bool, list[str] | None]:
-        """Check pubdate format."""
-        # 🤔 poor-man date validation???
-        yyyymm = 6
-        december = 12
-        if len(self.pub_date) != yyyymm:
-            # TODO: I think YYYYMMDD is also ok...
-            return (False, [f"Assicurarsi che la data di pubblicazione ({self.pub_date}) abbia il formato YYYYMM."])
-        if not self.pub_date.isdigit():
-            return (False, [f"Assicurarsi che la data di pubblicazione ({self.pub_date}) sia composta da sole cifre."])
-        if int(self.pub_date[-2:]) > december:
-            return (
-                False,
-                [
-                    f"Assicurarsi che il mese della data di pubblicazione (ultime due cifre di {self.pub_date})"
-                    f" sia minore o uguale a {december}."
-                ],
-            )
-        return (True, None)
-
     def validate(self) -> tuple[bool, list[str] | None]:
         """
         Validate the metadata.
@@ -175,10 +143,6 @@ class BookMetadata:
         all_valid, reasons_failed = True, []
         for validator in (
             "validate_authors",
-            "validate_measures",
-            "validate_pubdate",
-            "validate_isbn",
-            "validate_pages",
             "validate_translation",
             "validate_collection",
         ):
@@ -197,14 +161,15 @@ def generate_onix_message(  # noqa: C901, PLR0912, PLR0914, PLR0915
     is_for_ISBN: bool = True,  # noqa: N803
 ) -> etree.Element:
     """
-    Arrange metadta into an XML tree.
+    Arrange metadata into an XML tree.
 
     Args:
         book_meta: the metadata to work with;
 
-        is_for_ISBN: when Ture, the generated tree is suitable to be
-        sent to RISE's web app; otherwise the tree is suitable to te
-        sent to Onix-related services;
+        is_for_ISBN:
+        - True: the tree is suitable for Onix-related services;
+        - False: the tree is suitable for RISE's web app
+          (distinguish easily: the last sections include price)
 
     """
     if is_for_ISBN:
@@ -259,7 +224,7 @@ def generate_onix_message(  # noqa: C901, PLR0912, PLR0914, PLR0915
     for i, m in enumerate(book_meta.measures, start=1):
         measure = etree.Element("Measure")
         etree.SubElement(measure, "MeasureType").text = f"0{i}"
-        etree.SubElement(measure, "Measurement").text = m
+        etree.SubElement(measure, "Measurement").text = str(m)
         etree.SubElement(measure, "MeasureUnitCode").text = MEAS_UNIT
         descriptive_detail.append(measure)
     etree.SubElement(descriptive_detail, "CountryOfManufacture").text = PRNT_STAT
@@ -354,7 +319,7 @@ def generate_onix_message(  # noqa: C901, PLR0912, PLR0914, PLR0915
     # P.11
     extent = etree.SubElement(descriptive_detail, "Extent")
     etree.SubElement(extent, "ExtentType").text = "06"  # List 23
-    etree.SubElement(extent, "ExtentValue").text = book_meta.pages
+    etree.SubElement(extent, "ExtentValue").text = str(book_meta.pages)
     etree.SubElement(extent, "ExtentUnit").text = "03"  # List 24
 
     # P.12
@@ -403,7 +368,7 @@ def generate_onix_message(  # noqa: C901, PLR0912, PLR0914, PLR0915
     # P.20
     publication_date = etree.SubElement(publishing_detail, "PublishingDate")
     etree.SubElement(publication_date, "PublishingDateRole").text = "01"  # For ISBN purposes
-    etree.SubElement(publication_date, "Date").text = book_meta.pub_date  # Format "YYYYMM"
+    etree.SubElement(publication_date, "Date").text = book_meta.pub_date.strftime("%Y%m%d")  # Format "YYYYMM"
 
     # P.21
     # Not relevant
@@ -437,11 +402,11 @@ def generate_onix_message(  # noqa: C901, PLR0912, PLR0914, PLR0915
     etree.SubElement(supply_detail, "ProductAvailability").text = "20"
     price_element = etree.SubElement(supply_detail, "Price")
     etree.SubElement(price_element, "PriceType").text = "01"  # List 58
-    etree.SubElement(price_element, "PriceAmount").text = book_meta.price
+    etree.SubElement(price_element, "PriceAmount").text = f"{book_meta.price:.2f}"
     etree.SubElement(price_element, "CurrencyCode").text = SUPL_CURR
     price_tax_element = etree.SubElement(supply_detail, "Price")
     etree.SubElement(price_tax_element, "PriceType").text = "02"  # List 58
-    etree.SubElement(price_tax_element, "PriceAmount").text = book_meta.price_tax
+    etree.SubElement(price_tax_element, "PriceAmount").text = f"{book_meta.price_tax:.2f}"
     etree.SubElement(price_tax_element, "CurrencyCode").text = SUPL_CURR
 
     # TODO: validate the whole tree wrt Onix XSD
@@ -476,7 +441,7 @@ class BaseGenerator(BrowserView):
             #       or maybe I should add a method to publication-metadata class
             book_meta = BookMetadata(
                 isbn=pmo.isbn or "",
-                measures=[pmo.altezza or "", pmo.larghezza or "", pmo.spessore or ""],
+                measures=[pmo.altezza or 0, pmo.larghezza or 0, pmo.spessore or 0],
                 collection_issn=pmo.collana_issn or "",
                 collection_title=pmo.collana or "",
                 title=pmo.title or "",
@@ -494,9 +459,8 @@ class BaseGenerator(BrowserView):
                 thema_keys=ssplit(pmo.classificazione),
                 abstract=pmo.abstract or "",
                 pub_city=pmo.luogo_di_pubblicazione or "",
-                pub_date=pmo.data_pubblicazione or "",
-                price=pmo.prezzo or "",
-                price_tax=pmo.prezzo_con_iva or "",
+                pub_date=pmo.data_pubblicazione or None,
+                price_tax=pmo.prezzo_con_iva or 0.0,
             )
 
             validate, reasons_failed = book_meta.validate()
@@ -545,6 +509,8 @@ class BaseGenerator(BrowserView):
 
 
 class OnixGenerator(BaseGenerator):
+    """ISBN-ready XML (i.e. non-app)."""
+
     def __call__(self):
         validate, other = self.get_metadata()
         if not validate:
@@ -557,7 +523,7 @@ class OnixGenerator(BaseGenerator):
             return self.index()
 
         book_meta = other  # 🤮 please refactor me!!!
-        xml_tree = generate_onix_message(book_meta, is_for_ISBN=False)
+        xml_tree = generate_onix_message(book_meta, is_for_ISBN=True)
         self.xml_obj = self.save_xml_file(
             file_id="xml_isbn",
             title="XML per ISBN",
@@ -574,6 +540,8 @@ class OnixGenerator(BaseGenerator):
 
 
 class AppGenerator(BaseGenerator):
+    """App-ready XML."""
+
     def __call__(self):
         validate, other = self.get_metadata()
         if not validate:
@@ -586,7 +554,7 @@ class AppGenerator(BaseGenerator):
             return self.index()
 
         book_meta = other  # 🤮 please refactor me!!!
-        xml_tree = generate_onix_message(book_meta, is_for_ISBN=True)
+        xml_tree = generate_onix_message(book_meta, is_for_ISBN=False)
         self.xml_obj = self.save_xml_file(
             file_id="xml_app",
             title="App-ready XML",

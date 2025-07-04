@@ -3,6 +3,10 @@
           i18n:domain="scienzaexpress.preflights"
 >
 
-  <!-- -*- extra stuff goes here -*- -->
+  <records interface="scienzaexpress.preflights.controlpanel.controlpanel.ISEMetaSettings"
+           prefix="se_meta"
+  />
+  <!-- The "prefix" is used also in the vocabulary configuration -->
+  <!-- see also vocabularies/configure.zcml -->
 
 </registry>

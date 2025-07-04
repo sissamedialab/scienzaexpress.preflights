@@ -26,32 +26,29 @@
     <metal:content-core fill-slot="content-core">
       <metal:block define-macro="content-core">
 
-        <h2>PDF content</h2>
-        <!--<div tal:replace="view/my_custom_view_method" />-->
-        <!--<div tal:replace="context/my_custom_field" />-->
+        <h2>Validatione dei metadata nei PDF</h2>
         <tal:results tal:define="
                        results view/results;
                      "
                      tal:condition="view/results"
         >
-          <table border="1"
-                 cellpadding="4"
-                 cellspacing="0"
-          >
-            <thead>
-              <tr>
-                <th>result</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tal:repeat tal:repeat="result results">
-                <tr>
-                  <td tal:content="result"></td>
-                </tr>
+
+          <div class="d-flex flex-column">
+            <tal:repeat tal:repeat="file results">
+              <div class="mt-3"><h3 tal:define="
+                      first python:file[0];
+                    "
+                    tal:content="first/file_obj/file/filename"
+                ></h3>
+              </div>
+              <tal:repeat tal:repeat="result file">
+                <div tal:content="result"></div>
               </tal:repeat>
-            </tbody>
-          </table>
+            </tal:repeat>
+          </div>
+
         </tal:results>
+
         <tal:noresults tal:condition="not:view/results">
           <p>No PDF files found in this folder.</p>
         </tal:noresults>

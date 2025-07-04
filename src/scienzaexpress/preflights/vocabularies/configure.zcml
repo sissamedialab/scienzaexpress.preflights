@@ -1,5 +1,8 @@
 <configure xmlns="http://namespaces.zope.org/zope">
 
-  <!-- -*- extra stuff goes here -*- -->
+  <utility
+      name="se_meta.typographies"
+      component="scienzaexpress.preflights.vocabularies.metadata_vocabularies.typographies_vocabulary"
+      />
 
 </configure>

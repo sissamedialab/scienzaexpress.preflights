@@ -1,4 +1,3 @@
-# from scienzaexpress.preflights import _
 from pathlib import Path
 from plone.dexterity.interfaces import IDexterityItem
 from Products.CMFCore.interfaces import ISiteRoot
@@ -9,12 +8,10 @@ from zope.interface import Interface
 from zope.schema import getFieldsInOrder
 
 import dataclasses
-import datetime
 import plone.api
 import string
 import subprocess  # noqa: S404
 import tempfile
-import zoneinfo
 
 
 # Unexpected!!!
@@ -59,8 +56,8 @@ class Check:
     See examples in ValidatePdfMetadata.checks
 
     Please also note that string formatting should allow for date-formatting:
-    >>> "{:%B}".format(datetime.datetime.now())
-    >>> "March"
+    "{:%B}".format(datetime.datetime.now())
+    --> "March"
     but I wasn't able to correctly leverage i18n.
     Please see ValidatePdfMetadata._enrich_pmo()
     """
@@ -158,19 +155,33 @@ class ValidatePdfMetadata(BrowserView):
 
     @staticmethod
     def find_metadata_object(context) -> IDexterityItem | None:
-        """Find the publication-metadata object related to this folder.
+        """
+        Find the publication-metadata object related to this folder.
 
         We'll look for a Metadata object inside a folder named "XML",
-        walking back from the current folder up to the site root.
+        walking back from the current folder up to the site root,
+        and descending into all folders.
 
         The first such object that we find "wins".
         """
+        # TODO: should we just drop the constraint about having a container folder named "XML"?
+        catalog = plone.api.portal.get_tool("portal_catalog")
         xml_folder = None
         for parent in context.aq_chain:
             if xml_folder := parent.get("XML", None):
                 break
             if ISiteRoot.providedBy(parent):
                 break
+            path = "/".join(parent.getPhysicalPath())
+            results = catalog(
+                portal_type="Folder",
+                id="XML",
+                path={"query": path},
+            )
+            if results:
+                xml_folder = results[0].getObject()
+                break
+
         if not xml_folder:
             return None
 
@@ -202,62 +213,33 @@ class ValidatePdfMetadata(BrowserView):
         We recognize date fields because they start with "data_";
         e.g. data_pubblicazione
 
-        Note that date fields are strings of either these forms:
-        - YYYYMM
-        - YYYYMMDD
-
         Raises:
             ValueError: if a date field is not in the expected format.
 
         """
-        yyyymm = 6
-        yyyymmdd = 8
         for name, _ in getFieldsInOrder(IMetadata):
             if name.startswith("data_"):
                 value = getattr(pmo, name)
                 if not value:
-                    # TODO: refactor me, please!!!
-                    pass
-                elif len(value) == yyyymm:
-                    value = datetime.datetime(
-                        year=int(value[:4]),
-                        month=int(value[4:]),
-                        day=1,
-                        tzinfo=zoneinfo.ZoneInfo("Europe/Rome"),
-                    )
-                elif len(value) == yyyymmdd:
-                    value = datetime.datetime(
-                        year=int(value[:4]),
-                        month=int(value[4:6]),
-                        day=int(
-                            value[6:],
-                        ),
-                        tzinfo=zoneinfo.ZoneInfo("Europe/Rome"),
-                    )
+                    month_l = None
+                    year_l = None
                 else:
-                    msg = f"Il campo {name} deve avere la forma YYYYMM oppure YYYYMMDD"
-                    raise ValueError(msg)
-
-                if value:
                     month_l = plone.api.portal.translate(
                         value.strftime("%B"),
                         lang=plone.api.portal.get_current_language(),
                     )
                     month_l = IT_MONTHS.get(month_l, month_l)
                     year_l = value.strftime("%Y")
-                else:
-                    month_l = None
-                    year_l = None
 
                 setattr(pmo, f"{name}__B", month_l)
                 setattr(pmo, f"{name}__Y", year_l)
 
-    def check_all_pdfs(self) -> list[CheckResult]:
+    def check_all_pdfs(self) -> list[list[CheckResult]]:
         """
         Apply all checks to all PDF files in this folder.
 
         Returns:
-        the list of all checks performed on all PDF files.
+        the list of list of all checks performed on all PDF files.
 
         """
         # see rise#16
@@ -268,7 +250,7 @@ class ValidatePdfMetadata(BrowserView):
         for file_obj in pdf_files:
             temp_path = self._temp_copy(file_obj)
             file_results = self._process_filepath(file_obj, temp_path)
-            results.extend(file_results)
+            results.append(file_results)
             temp_path.unlink()
         return results
 
