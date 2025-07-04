@@ -14,7 +14,7 @@ long_description = f"""
 
 setup(
     name="scienzaexpress.preflights",
-    version="1.1.1",
+    version="1.1.2",
     description="A collection of preflight-check actions for RISE",
     long_description=long_description,
     long_description_content_type="text/markdown",

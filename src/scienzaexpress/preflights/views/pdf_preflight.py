@@ -75,7 +75,8 @@ class PdfPreflight(BrowserView):
         for file_obj in pdf_files:
             temp_path = self._temp_copy(file_obj)
             file_results = self._process_filepath(file_obj, temp_path)
-            results.append(file_results)
+            if file_results:
+                results.append(file_results)
             temp_path.unlink()
         return results
 

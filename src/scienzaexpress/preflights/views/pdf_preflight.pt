@@ -48,7 +48,7 @@
 
         </tal:results>
         <tal:noresults tal:condition="not:view/results">
-          <p>No PDF files found in this folder.</p>
+          <p>Nessun file PDF con immagini in questo folder.</p>
         </tal:noresults>
       </metal:block>
     </metal:content-core>
