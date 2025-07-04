@@ -67,7 +67,7 @@ class PdfPreflight(BrowserView):
         self.results = self.pdf_images_results
         return self.index()
 
-    def check_pdf_images(self) -> list[CheckResult]:
+    def check_pdf_images(self) -> list[list[CheckResult]]:
         """Verify that all images of all PDF files in this folder meet some requirements."""
         # see rise#24
         results = []
@@ -75,7 +75,7 @@ class PdfPreflight(BrowserView):
         for file_obj in pdf_files:
             temp_path = self._temp_copy(file_obj)
             file_results = self._process_filepath(file_obj, temp_path)
-            results.extend(file_results)
+            results.append(file_results)
             temp_path.unlink()
         return results
 
