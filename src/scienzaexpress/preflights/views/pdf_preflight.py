@@ -150,7 +150,12 @@ class PdfPreflight(BrowserView):
         pdf_types = ("application/pdf",)
         # Warning: do no use contentFilter={"Type": "File"}
         # because "Type" depends on the content-type _label_!!!
-        for obj in self.context.listFolderContents(contentFilter={"mime_type": "application/pdf"}):
+        for obj in self.context.listFolderContents(
+            contentFilter={
+                "portal_type": "File",
+                "mime_type": "application/pdf",
+            },
+        ):
             if obj.file.contentType in pdf_types:
                 file_objs.append(obj)
         return file_objs
