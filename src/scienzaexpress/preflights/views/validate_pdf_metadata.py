@@ -114,8 +114,8 @@ class ValidatePdfMetadata(BrowserView):
         ),
         Check(page=4, target="{m.autori}"),
         Check(page=4, target="{m.title}"),
-        Check(page=4, target="{m.sottotitolo}"),
-        Check(page=4, target="ISBN: {m.isbn}"),
+        # Skip Check(page=4, target="{m.sottotitolo}"),
+        Check(page=4, target="ISBN {m.isbn}"),
         Check(page=4, target="Traduzione di {m.traduttori},"),
         # Skip Check(page=4, target="Supervisione editoriale di {m.supervisor},"),
         # Skip Check(page=4, target="Copertina di {m.nome_copertina},"),
@@ -127,7 +127,7 @@ class ValidatePdfMetadata(BrowserView):
         ),
         # Skip Check(page=4, target="Impaginazione di {m.nome_impaginatore}"),
         Check(
-            page=4,
+            page=2,
             target="Puoi trovare i nostri libri anche su www.scienzaexpress.it",
         ),
         # last page TODO: check me!!!
