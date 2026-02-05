@@ -55,4 +55,15 @@
       permission="zope2.View"
       />
 
+  <!-- This view should be constrained to scienzaexpress.preflights.content.metadata.IMetadata, -->
+  <!-- but I wasn't able to make the system work then: I kept on getting 404. -->
+  <!-- For now I'm falling back to "for='*'" 😢 -->
+  <browser:page
+      name="validate-metadata"
+      for="*"
+      class=".metadata_validator.MetadataValidator"
+      template="metadata_validator.pt"
+      permission="zope2.View"
+      />
+
 </configure>

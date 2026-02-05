@@ -21,8 +21,19 @@ class ValidateISBN(SimpleFieldValidator):
     """
 
     def validate(self, value: str) -> None:
-        super().validate(value)
+        """
+        Validate ISBN.
 
+        Raises:
+          Invalid: if the ISBN is not of the correct length, if it is not ISBN-valid,
+        or if it does not start with two well-known values.
+
+        """
+        # It's ok to have empty values, we don't care, the field is not mandatory.
+        if value is None:
+            return super().validate(value)
+
+        super().validate(value)
         isbn = value.replace("-", "").replace(" ", "")  # remove hyphens and spaces
 
         if not re.fullmatch(r"\d{13}", isbn):
@@ -51,6 +62,17 @@ class ValidateEven(SimpleFieldValidator):
     """
 
     def validate(self, value: int) -> None:
+        """
+        Validate a number: it must be even.
+
+        Raises:
+          Invalid: if the number is odd.
+
+        """
+        # It's ok to have empty values, we don't care, the field is not mandatory.
+        if value is None:
+            return super().validate(value)
+
         super().validate(value)
 
         if value % 2 != 0:

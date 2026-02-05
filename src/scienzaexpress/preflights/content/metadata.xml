@@ -23,7 +23,8 @@
            type="zope.schema.TextLine"
     >
       <description />
-      <title>ISBN</title>
+      <required>False</required>
+      <title>ISBN 🟡</title>
     </field>
     <field name="foto_autore"
            type="plone.namedfile.field.NamedBlobImage"
@@ -36,7 +37,8 @@
            type="zope.schema.TextLine"
     >
       <description>Uno o pi&#249; autori, nella seguente forma: Nome Cognome; Nome Cognome; ...</description>
-      <title>Autori</title>
+      <required>False</required>
+      <title>Autori 🟡</title>
     </field>
     <field name="illustratori"
            type="zope.schema.TextLine"
@@ -70,7 +72,8 @@
            type="zope.schema.Date"
     >
       <description>La data di pubblicazione</description>
-      <title>Data Pubblicazione</title>
+      <required>False</required>
+      <title>Data Pubblicazione 🟡</title>
     </field>
     <field name="data_stampa"
            type="zope.schema.Date"
@@ -106,7 +109,8 @@
            type="zope.schema.TextLine"
     >
       <description>La citt&#224; dove &#232; stato pubblicato. Assume di default che sia in Italia.</description>
-      <title>Luogo di Pubblicazione</title>
+      <required>False</required>
+      <title>Luogo di Pubblicazione 🟡</title>
     </field>
     <field name="collana"
            type="zope.schema.TextLine"
@@ -133,7 +137,8 @@
            type="zope.schema.Text"
     >
       <description>Testo della quarta di copertina</description>
-      <title>Abstract</title>
+      <required>False</required>
+      <title>Abstract 🟡</title>
     </field>
     <field name="lingua_originale"
            type="zope.schema.TextLine"
@@ -153,21 +158,24 @@
            type="zope.schema.Int"
     >
       <description>in mm, senza virgole</description>
-      <title>Altezza</title>
+      <required>False</required>
+      <title>Altezza 🟡</title>
       <min>1</min>
     </field>
     <field name="larghezza"
            type="zope.schema.Int"
     >
       <description>in mm, senza virgole</description>
-      <title>Larghezza</title>
+      <required>False</required>
+      <title>Larghezza 🟡</title>
       <min>1</min>
     </field>
     <field name="spessore"
            type="zope.schema.Int"
     >
       <description>in mm, senza virgole</description>
-      <title>Spessore</title>
+      <required>False</required>
+      <title>Spessore 🟡</title>
       <min>1</min>
     </field>
     <field form:validator="scienzaexpress.preflights.content.metadata.ValidateEven"
@@ -190,7 +198,8 @@
            type="zope.schema.Choice"
     >
       <description>Tipo di rilegatura</description>
-      <title>Rilegatura</title>
+      <required>False</required>
+      <title>Rilegatura 🟡</title>
       <values>
         <element>BB - Copertina rigida</element>
         <element>BC - Copertina flessibile</element>
@@ -230,7 +239,8 @@
            type="zope.schema.Float"
     >
       <description>Prezzo con IVA</description>
-      <title>Prezzo di copertina</title>
+      <required>False</required>
+      <title>Prezzo di copertina 🟡</title>
       <min>1.0</min>
     </field>
     <field name="pubblico"

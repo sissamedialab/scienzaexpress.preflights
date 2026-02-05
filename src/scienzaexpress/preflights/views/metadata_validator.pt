@@ -1,0 +1,60 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="scienzaexpress.preflights"
+>
+  <body>
+    <metal:content-core fill-slot="content-core">
+      <metal:block define-macro="content-core">
+        <h1 class="documentFirstHeading">Validazione Metadata</h1>
+        <div class="metadata-validation-results">
+          <p class="discreet">Verifica della presenza dei campi obbligatori per l'oggetto Metadata.</p>
+          <div class="alert alert-success"
+               role="alert"
+               tal:condition="view/all_fields_present"
+          >Tutti i campi obbligatori sono presenti.</div>
+          <div class="alert alert-danger fs-2 mt-2 mb-2"
+               role="alert"
+               tal:condition="not:view/all_fields_present"
+          >Alcuni campi obbligatori sono mancanti.</div>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Campo</th>
+                <th>Nome tecnico</th>
+                <th>Stato</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr tal:repeat="check view/results">
+                <td tal:content="check/field_label">Field Label</td>
+                <td>
+                  <code tal:content="check/field_name">field_name</code>
+                </td>
+                <td class="align-middle">
+                  <span class="badge text-success"
+                        title="Campo presente"
+                        tal:condition="check/is_present"
+                  >&checkmark;</span>
+                  <span class="badge text-bg-danger"
+                        title="Campo mancante"
+                        tal:condition="not:check/is_present"
+                  >&cross;</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div>
+            <a class="btn btn-primary"
+               tal:attributes="
+                 href string:${context/absolute_url}/edit;
+               "
+            >Modifica Metadata</a>
+          </div>
+        </div>
+      </metal:block>
+    </metal:content-core>
+  </body>
+</html>
